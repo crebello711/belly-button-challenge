@@ -161,7 +161,7 @@ function generateTable(subject_metadata) {
         let key_cell = document.createElement("td");
         key_cell.style.fontWeight = "bold";
         key_cell.style.padding = "10px";
-        key_cell.style.fontSize = "16";
+        key_cell.style.fontSize = "15";
 
         let key_text = document.createTextNode(`${key}:`);
         key_cell.appendChild(key_text);
