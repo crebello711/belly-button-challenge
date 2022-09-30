@@ -42,7 +42,6 @@ function datapull(selectedID) {
 
         barChart(final_data);
         bubbleChart(final_data);
-        gaugeChart(Object.values(subjectMetaData)[6]);
         generateTable(subjectMetaData);
     });
 }
@@ -77,7 +76,7 @@ function barChart(sub_data) {
         title: {
             text: "Top 10 Microbial Species Found <br> in Belly Button",
             font: {
-                size: 20,
+                size: 15,
                 xanchor: "left",
                 yanchor: "top",
             },
@@ -99,10 +98,9 @@ function barChart(sub_data) {
         xaxis: {
             title: {
                 text: "Number of Microbial Species",
-                size: 10,
                 font: {
                     family: "Overpass, Open Sans, Raleway",
-                    size: 10,
+                    size: 15,
                 },
             },
         },
@@ -115,4 +113,82 @@ function barChart(sub_data) {
     Plotly.newPlot("bar", plotdata, layout, config);
 }
 
+function bubbleChart(sub_data) {
+
+    var trace1 = {
+        x: sub_data.ids,
+        y: sub_data.values,
+        mode: "markers",
+        text: sub_data.labels,
+        marker: {
+            size: sub_data.values,
+            color: sub_data.ids,
+        },
+    };
+
+    var data = [trace1];
+
+    var layout = {
+        title: "OTU ID vs Sample Value",
+        font: {
+            family: "Overpass, Open Sans, Raleway",
+        },
+        height: 600,
+        width: 1000,
+    };
+
+    var config = {
+        responsive: true,
+    };
+    Plotly.newPlot("bubble", data, layout, config);
+}
+
+
+function generateTable(subject_metadata) {
+    let body = document.getElementsByClassName("panel-body")[0];
+    let tbl = document.createElement("table");
+    tbl.setAttribute("id", "table");
+
+    //console.log(tbl);
+
+    let tblBody = document.createElement("tbody");
+
+    Object.entries(subject_metadata).forEach(function ([key, value]) {
+        console.log(key, value);
+
+        let row = document.createElement("tr");
+
+        let key_cell = document.createElement("td");
+        key_cell.style.fontWeight = "bold";
+        key_cell.style.padding = "10px";
+        key_cell.style.fontSize = "16";
+
+        let key_text = document.createTextNode(`${key}:`);
+        key_cell.appendChild(key_text);
+        row.appendChild(key_cell);
+
+        let value_cell = document.createElement("td");
+        value_cell.style.padding = "10px";
+        value_cell.style.fontSize = "16";
+        let value_text = document.createTextNode(`${value}`);
+        value_cell.appendChild(value_text);
+        row.appendChild(value_cell);
+
+        tblBody.append(row);
+    });
+
+    tbl.appendChild(tblBody);
+    body.appendChild(tbl);
+}
+
 init();
+
+d3.selectAll("#selDataset").on("change", subjectChanged);
+
+function subjectChanged() {
+    let selectedID = d3.select("#selDataset").node().value;
+
+    d3.selectAll("#table").remove();
+
+    datapull(selectedID);
+}
