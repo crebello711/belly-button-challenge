@@ -12,7 +12,7 @@
 
 * Display the sample metadata, i.e., an individual's demographic information.
 
-![Demographic Info](Images/demoData.PNG)
+  ![Demographic Info](Images/demoData.PNG)
 
 * Update all the plots when a new sample is selected.
 
